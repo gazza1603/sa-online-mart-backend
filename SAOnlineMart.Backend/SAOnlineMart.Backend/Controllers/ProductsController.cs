@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SAOnlineMart.Backend.Data;
 using SAOnlineMart.Backend.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -58,7 +59,21 @@ namespace SAOnlineMart.Backend.Controllers
             }
 
             _context.Entry(product).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return NoContent();
         }
@@ -77,6 +92,11 @@ namespace SAOnlineMart.Backend.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        private bool ProductExists(int id)
+        {
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }
