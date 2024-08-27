@@ -15,4 +15,5 @@ namespace SAOnlineMart.Backend.Data
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
     }
 
+
 }

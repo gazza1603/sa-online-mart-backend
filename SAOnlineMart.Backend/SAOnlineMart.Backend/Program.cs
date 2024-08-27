@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Register the DbContext with the DI container
 builder.Services.AddDbContext<SAOnlineMartContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,6 +27,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.MapRazorPages();
+
+app.MapControllers();
 
 app.MapControllers();
 
