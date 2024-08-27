@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SAOnlineMart.Backend.Data;
-using SAOnlineMart.Backend.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SAOnlineMart.Backend.Data; // Ensure this matches the namespace of your DbContext
-using SAOnlineMart.Backend.Models;
+using SAOnlineMart.Backend.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
