@@ -16,5 +16,5 @@ public class Order
     [Range(0.01, 1000000, ErrorMessage = "Total amount must be between 0.01 and 1,000,000")]
     public decimal TotalAmount { get; set; }
 
-    public ICollection<OrderItem> OrderItems { get; set; }
+    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }

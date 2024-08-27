@@ -130,5 +130,44 @@ namespace SAOnlineMart.Backend.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpPost("{userId}/Checkout")]
+        public async Task<ActionResult<Order>> Checkout(int userId)
+        {
+            var cart = await _context.ShoppingCarts
+                .Include(c => c.Items)
+                .ThenInclude(i => i.Product)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (cart == null || !cart.Items.Any())
+            {
+                return BadRequest("Shopping cart is empty or not found.");
+            }
+
+            var totalAmount = cart.Items.Sum(i => i.Product.Price * i.Quantity);
+
+            var order = new Order
+            {
+                UserId = userId,
+                OrderDate = DateTime.UtcNow,
+                TotalAmount = totalAmount,
+                OrderItems = cart.Items.Select(i => new OrderItem
+                {
+                    ProductId = i.ProductId,
+                    Quantity = i.Quantity,
+                    Price = i.Product.Price
+                }).ToList()
+            };
+
+            _context.Orders.Add(order);
+
+            _context.ShoppingCarts.Remove(cart);
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(OrdersController.GetOrder), "Orders", new { id = order.Id }, order);
+        }
+
+
     }
 }
