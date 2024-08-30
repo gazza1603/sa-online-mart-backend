@@ -3,9 +3,20 @@ using SAOnlineMart.Backend.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register the DbContext with the DI container
 builder.Services.AddDbContext<SAOnlineMartContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5143")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -26,11 +37,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowLocalhost");
+
 app.UseAuthorization();
 
 app.MapRazorPages();
-
-app.MapControllers();
 
 app.MapControllers();
 

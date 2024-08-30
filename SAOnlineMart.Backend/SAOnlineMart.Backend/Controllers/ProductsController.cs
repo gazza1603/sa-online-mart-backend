@@ -42,8 +42,12 @@ namespace SAOnlineMart.Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
+            Console.WriteLine("PostProduct method started."); // Debugging line
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
+
+            Console.WriteLine($"Product created with ID: {product.Id}"); // Debugging line
 
             return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
         }

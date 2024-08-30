@@ -78,5 +78,20 @@ namespace SAOnlineMart.Backend.Controllers
 
             return NoContent();
         }
+
+        // POST: api/Users/authenticate
+        [HttpPost("authenticate")]
+        public async Task<ActionResult<User>> Authenticate(User loginUser)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == loginUser.Username && u.Password == loginUser.Password);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(user);
+        }
     }
 }
